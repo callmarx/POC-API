@@ -1,5 +1,6 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
+  files: ['*.ts', '*.tsx'],
   parserOptions: {
     project: 'tsconfig.json',
     sourceType: 'module',
