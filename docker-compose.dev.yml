@@ -5,16 +5,29 @@ x-networks-service-template: &networks
     - api
 
 services:
+  poc-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: poc-api-container
+    <<: *networks
+    volumes:
+      - ./src:/poc-api/src
+      - ./envs:/poc-api/envs
+      - ./test:/poc-api/test
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db-api
+
   db-api:
     container_name: db-api-container
     image: postgres:12-alpine3.14
     <<: *networks
-    ports:
-      - "5432:5432"
     volumes:
       - db-vol:/var/lib/postgresql/data
     env_file:
-      - envs/docker.env
+      - ./envs/docker.env
 
   pgadmin:
     image: dpage/pgadmin4
@@ -27,7 +40,7 @@ services:
     volumes:
       - pgadmin-vol:/var/lib/pgadmin
     env_file:
-      - envs/docker.env
+      - ./envs/docker.env
 
 networks:
   api:
