@@ -1,0 +1,40 @@
+version: "3.5"
+
+x-networks-service-template: &networks
+  networks:
+    - api
+
+services:
+  db-api:
+    container_name: db-api-container
+    image: postgres:12-alpine3.14
+    <<: *networks
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-vol:/var/lib/postgresql/data
+    env_file:
+      - envs/docker.env
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin-container
+    <<: *networks
+    ports:
+      - "15432:80"
+    depends_on:
+      - db-api
+    volumes:
+      - pgadmin-vol:/var/lib/pgadmin
+    env_file:
+      - envs/docker.env
+
+networks:
+  api:
+    name: poc-api-network
+    driver: bridge
+
+volumes:
+  db-vol:
+  pgadmin-vol:
+
