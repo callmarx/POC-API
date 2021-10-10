@@ -10,7 +10,7 @@ import { DatabaseModule } from './database/database.module';
   imports: [
     ArticlesModule,
     ConfigModule.forRoot({
-      envFilePath: 'envs/development.env',
+      envFilePath: `${process.cwd()}/envs/${process.env.NODE_ENV}.env`,
       validationSchema: Joi.object({
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PORT: Joi.number().required(),
@@ -18,7 +18,7 @@ import { DatabaseModule } from './database/database.module';
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
         PORT: Joi.number(),
-      })
+      }),
     }),
     DatabaseModule,
   ],

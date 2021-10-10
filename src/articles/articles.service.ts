@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 export class ArticlesService {
   constructor(
     @InjectRepository(Article)
-    private articlesRepository: Repository<Article>
+    private articlesRepository: Repository<Article>,
   ) {}
 
   async create(article: CreateArticleDto) {
@@ -31,7 +31,7 @@ export class ArticlesService {
   async update(id: number, article: UpdateArticleDto) {
     await this.articlesRepository.update(id, article);
     const updatedArticle = await this.articlesRepository.findOne(id);
-    if (updatedArticle) return updatedArticle
+    if (updatedArticle) return updatedArticle;
     throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
   }
 
