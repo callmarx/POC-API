@@ -8,21 +8,21 @@ class DatabaseLogger implements TypeOrmLogger {
     if (queryRunner?.data?.isCreatingLogs) return;
 
     this.logger.log(
-      `${query} -- Parameters: ${this.stringifyParameters(parameters)}`
+      `${query} #--> Parameters: ${this.stringifyParameters(parameters)}`
     );
   }
   logQueryError(error: string, query: string, parameters?: unknown[], queryRunner?: QueryRunner) {
     if (queryRunner?.data?.isCreatingLogs) return;
 
     this.logger.error(
-      `${query} -- Parameters: ${this.stringifyParameters(parameters)} -- ${error}`
+      `${query} #--> Parameters: ${this.stringifyParameters(parameters)} -- ${error}`
     );
   }
   logQuerySlow(time: number, query: string, parameters?: unknown[], queryRunner?: QueryRunner) {
     if (queryRunner?.data?.isCreatingLogs) return;
 
     this.logger.warn(
-      `Time: ${time} -- Parameters: ${this.stringifyParameters(parameters)} -- ${query}`
+      `Time: ${time} #--> Parameters: ${this.stringifyParameters(parameters)} -- ${query}`
     );
   }
   logMigration(message: string) { this.logger.log(message); }
