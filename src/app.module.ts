@@ -5,10 +5,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArticlesModule } from './articles/articles.module';
 import { DatabaseModule } from './database/database.module';
+import { UsersModule } from './users/users.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
-    ArticlesModule,
     ConfigModule.forRoot({
       envFilePath: `${process.cwd()}/envs/${process.env.NODE_ENV}.env`,
       validationSchema: Joi.object({
@@ -17,10 +18,15 @@ import { DatabaseModule } from './database/database.module';
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION_TIME: Joi.string().required(),
         PORT: Joi.number(),
       }),
     }),
     DatabaseModule,
+    ArticlesModule,
+    UsersModule,
+    AuthenticationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
