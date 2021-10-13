@@ -22,7 +22,7 @@ export class AuthenticationService {
         ...registrationData,
         password: hashedPassword
       });
-      createdUser.password = undefined;
+      createdUser.password = undefined; //is not the best way to not send the password in a response
       return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation) {

@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import getLogLevels from './logger/getLogLevels';
 import { SwaggerDocumentOptions } from './utils/SwaggerDocumentOptions';
@@ -23,6 +24,7 @@ async function bootstrap() {
   };
   const document = SwaggerModule.createDocument(app, config, options);
   SwaggerModule.setup('docs', app, document);
+  app.use(cookieParser());
   const configService = app.get(ConfigService);
   await app.listen(configService.get('PORT'));
 }
