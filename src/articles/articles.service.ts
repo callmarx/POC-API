@@ -4,6 +4,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from './entities/article.entity';
 import { Repository } from 'typeorm';
+import ArticleNotFoundException from './exception/articleNotFound.exception';
 
 @Injectable()
 export class ArticlesService {
@@ -25,20 +26,20 @@ export class ArticlesService {
   async findOne(id: number) {
     const article = await this.articlesRepository.findOne(id);
     if (article) return article;
-    throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+    throw new ArticleNotFoundException(id);
   }
 
   async update(id: number, article: UpdateArticleDto) {
     await this.articlesRepository.update(id, article);
     const updatedArticle = await this.articlesRepository.findOne(id);
     if (updatedArticle) return updatedArticle;
-    throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+    throw new ArticleNotFoundException(id);
   }
 
   async remove(id: number) {
     const deleteResponse = await this.articlesRepository.delete(id);
     if (!deleteResponse.affected) {
-      throw new HttpException('Article not found', HttpStatus.NOT_FOUND);
+      throw new ArticleNotFoundException(id);
     }
   }
 }

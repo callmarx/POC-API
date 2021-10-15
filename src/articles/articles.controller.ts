@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
+import FindOneParams from 'src/utils/findOneParams';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -29,18 +30,18 @@ export class ArticlesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.articlesService.findOne(id);
+  findOne(@Param() { id }: FindOneParams) {
+    return this.articlesService.findOne(Number(id));
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthenticationGuard)
-  update(@Param('id') id: number, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articlesService.update(id, updateArticleDto);
+  update(@Param() { id }: FindOneParams, @Body() updateArticleDto: UpdateArticleDto) {
+    return this.articlesService.update(Number(id), updateArticleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.articlesService.remove(id);
+  remove(@Param() { id }: FindOneParams) {
+    return this.articlesService.remove(Number(id));
   }
 }
