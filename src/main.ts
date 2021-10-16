@@ -31,6 +31,9 @@ async function bootstrap() {
   // Requirement to use cookie in authentication
   app.use(cookieParser());
 
+  // enable cors for all domains
+  app.enableCors();
+
   // Requirement to use class-validator as pipe validator
   app.useGlobalPipes(new ValidationPipe());
 
