@@ -1,7 +1,7 @@
 import { Logger as TypeOrmLogger, QueryRunner } from 'typeorm';
 import { Logger as NestLogger } from '@nestjs/common';
 
-class DatabaseLogger implements TypeOrmLogger {
+export class DatabaseLogger implements TypeOrmLogger {
   private readonly logger = new NestLogger('SQL');
 
   logQuery(query: string, parameters?: unknown[], queryRunner?: QueryRunner) {
@@ -46,5 +46,3 @@ class DatabaseLogger implements TypeOrmLogger {
     }
   }
 }
-
-export default DatabaseLogger;

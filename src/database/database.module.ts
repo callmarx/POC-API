@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import DatabaseLogger from 'src/logger/databaseLogger';
+import { DatabaseLogger } from 'src/logger/database.logger';
 
 @Module({
   imports: [

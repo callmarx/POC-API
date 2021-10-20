@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateArticleDto {
@@ -19,4 +19,4 @@ export class CreateArticleDto {
   content: string;
 }
 
-export default CreateArticleDto;
+export class UpdateArticleDto extends PartialType(CreateArticleDto) {}

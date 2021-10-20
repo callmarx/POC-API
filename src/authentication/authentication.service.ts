@@ -1,11 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
-import RegisterDto from './dto/register.dto';
+import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
-import PostgresErrorCode from '../database/postgresErrorCode.enum';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import TokenPayload from './tokenPayload.interface';
+import { TokenPayload } from './token-payload.interface';
 
 @Injectable()
 export class AuthenticationService {
@@ -17,19 +16,12 @@ export class AuthenticationService {
 
   public async register(registrationData: RegisterDto) {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
-    try {
-      const createdUser = await this.usersService.create({
-        ...registrationData,
-        password: hashedPassword
-      });
-      createdUser.password = undefined; //is not the best way to not send the password in a response
-      return createdUser;
-    } catch (error) {
-      if (error?.code === PostgresErrorCode.UniqueViolation) {
-        throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
-      }
-      throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    const createdUser = await this.usersService.create({
+      ...registrationData,
+      password: hashedPassword
+    });
+    createdUser.password = undefined; //is not the best way to not send the password in a response
+    return createdUser;
   }
 
   public getCookieWithJwtToken(userId: number) {
@@ -43,13 +35,9 @@ export class AuthenticationService {
   }
 
   public async getAuthenticatedUser(email: string, plainTextPassword: string) {
-    try {
-      const user = await this.usersService.getByEmail(email);
-      await this.verifyPassword(plainTextPassword, user.password);
-      return user;
-    } catch (error) {
-      throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
-    }
+    const user = await this.usersService.getByEmail(email);
+    await this.verifyPassword(plainTextPassword, user.password);
+    return user;
   }
 
   private async verifyPassword(plainTextPassword: string, hashedPassword: string) {

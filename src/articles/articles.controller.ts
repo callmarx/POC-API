@@ -11,12 +11,11 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
-import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
-import RequestWithUser from 'src/authentication/requestWithUser.interface';
-import FindOneParams from 'src/utils/findOneParams';
+import { JwtAuthenticationGuard } from 'src/authentication/jwt-authentication.guard';
+import { RequestWithUser } from 'src/authentication/request-with-user.interface';
+import { FindOneParams } from 'src/utils/find-one-params';
 import { ArticlesService } from './articles.service';
-import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
+import { CreateArticleDto, UpdateArticleDto } from './dto/article.dto';
 
 @Controller('articles')
 @UseInterceptors(ClassSerializerInterceptor)

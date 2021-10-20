@@ -4,17 +4,21 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
+  Unique
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Article } from 'src/articles/entities/article.entity';
 
+export const UNIQUE_USER_EMAIL_CONSTRAINT = 'unique_user_email_constraint';
+
 @Entity()
-class User {
+@Unique(UNIQUE_USER_EMAIL_CONSTRAINT, ['email'])
+export class User {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @Column({ unique: true })
+  @Column()
   public email: string;
 
   @Column()
@@ -33,5 +37,3 @@ class User {
   @UpdateDateColumn()
   public updatedAt: Date;
 }
-
-export default User;

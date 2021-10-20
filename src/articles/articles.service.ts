@@ -1,11 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateArticleDto } from './dto/create-article.dto';
-import { UpdateArticleDto } from './dto/update-article.dto';
+import { Injectable } from '@nestjs/common';
+import { CreateArticleDto, UpdateArticleDto } from './dto/article.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Article } from './entities/article.entity';
 import { Repository } from 'typeorm';
-import ArticleNotFoundException from './exception/articleNotFound.exception';
-import User from 'src/users/entities/user.entity';
+import { ArticleNotFoundException } from './exception/article.notfound.exception';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class ArticlesService {

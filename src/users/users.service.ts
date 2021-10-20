@@ -1,8 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import User from './entities/user.entity';
-import CreateUserDto from './dto/createUser.dto';
+import { User, UNIQUE_USER_EMAIL_CONSTRAINT } from './entities/user.entity';
+import { CreateUserDto } from './dto/user.dto';
+import { UserEmailAlreadyExists, UserEmailNotFoundException, UserIdNotFoundException } from './exception/user.exception';
 
 @Injectable()
 export class UsersService {
@@ -16,7 +17,7 @@ export class UsersService {
     if (user) {
       return user;
     }
-    throw new HttpException('User with this email does not exist', HttpStatus.NOT_FOUND);
+    throw new UserEmailNotFoundException(email);
   }
 
   async getById(id: number) {
@@ -24,12 +25,19 @@ export class UsersService {
     if (user) {
       return user;
     }
-    throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
+    throw new UserIdNotFoundException(id);
   }
 
   async create(userData: CreateUserDto) {
-    const newUser = await this.usersRepository.create(userData);
-    await this.usersRepository.save(newUser);
-    return newUser;
+    try {
+      const newUser = await this.usersRepository.create(userData);
+      await this.usersRepository.save(newUser);
+      return newUser;
+    } catch (error) {
+      if (error?.constraint === UNIQUE_USER_EMAIL_CONSTRAINT) {
+        throw new UserEmailAlreadyExists();
+      }
+      throw new InternalServerErrorException();
+    }
   }
 }

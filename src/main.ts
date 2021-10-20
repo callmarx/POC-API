@@ -4,8 +4,8 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
-import getLogLevels from './logger/getLogLevels';
-import { SwaggerDocumentOptions } from './utils/SwaggerDocumentOptions';
+import { getLogLevels } from './logger/get-log-levels';
+import { SwaggerDocumentOptions } from './utils/swagger-document-options';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
